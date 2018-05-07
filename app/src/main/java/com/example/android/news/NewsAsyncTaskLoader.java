@@ -7,7 +7,7 @@ import android.content.Context;
 import java.util.List;
 
 public class NewsAsyncTaskLoader extends AsyncTaskLoader<List<NewsItem>> {
-    private String mUrl = "";
+    private String mUrl;
 
     public NewsAsyncTaskLoader(Context context, String url){
         super(context);

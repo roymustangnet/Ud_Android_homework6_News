@@ -13,7 +13,11 @@ public class NewsItem {
 
     public String getTitle(){ return this.mTitle; }
 
-    public String getDate() { return this.mDate; }
+    public String getDate() {
+        String date = mDate.replace("T", " ");
+        date = date.replace("Z", " ");
+        return date;
+    }
 
     public String getURL() { return this.mURL; }
 }

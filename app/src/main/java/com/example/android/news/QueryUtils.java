@@ -50,7 +50,10 @@ public class QueryUtils {
                 JSONObject currentNews = results.getJSONObject(i);
                 String title = currentNews.getString("webTitle");
                 String date = currentNews.getString("webPublicationDate");
-                String category = currentNews.getString("pillarName");
+//                String category = currentNews.getString("pillarName");
+                String url = currentNews.getString("webUrl");
+                NewsItem aNewNews = new NewsItem(title, date, url);
+                news.add(aNewNews);
             }
         } catch (JSONException e) {
             e.printStackTrace();
