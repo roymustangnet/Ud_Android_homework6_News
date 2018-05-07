@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NewsListAdapter extends ArrayAdapter<NewsItem> {
 
