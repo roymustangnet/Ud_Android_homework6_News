@@ -1,12 +1,14 @@
 package com.example.android.news;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
+    private final String BASE_URL = "https://content.guardianapis.com/search";
     public NewsFragmentPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
@@ -14,29 +16,41 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     @Override
     public Fragment getItem(int position) {
-        String url = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=166f9f73-2fb8-4a05-8ccb-b9c1491c473b";
+//        String url = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=166f9f73-2fb8-4a05-8ccb-b9c1491c473b";
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
+        String section = "";
         switch (position){
             case 0:
-                args.putString("url", url);
+                section = mContext.getString(R.string.category_news);
                 break;
             case 1:
-                args.putString("url", url);
+                section = mContext.getString(R.string.category_politics);
                 break;
             case 2:
-                args.putString("url", url);
+                section = mContext.getString(R.string.category_sport);
                 break;
             case 3:
-                args.putString("url", url);
+                section = mContext.getString(R.string.category_culture);
                 break;
             case 4:
-                args.putString("url", url);
+                section = mContext.getString(R.string.category_business);
                 break;
         }
+        args.putString("url", getUrl(section));
         args.putInt("loaderId", position);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private String getUrl(String section) {
+        Uri baseUri = Uri.parse(BASE_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("section", section);
+        uriBuilder.appendQueryParameter("format", "json");
+        uriBuilder.appendQueryParameter("api-key", "166f9f73-2fb8-4a05-8ccb-b9c1491c473b");
+
+        return uriBuilder.toString();
     }
 
     @Override
@@ -49,13 +63,13 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             return mContext.getString(R.string.category_news);
         } else if (position == 1) {
-            return mContext.getString(R.string.category_option);
+            return mContext.getString(R.string.category_politics);
         } else if (position == 2) {
             return mContext.getString(R.string.category_sport);
         } else if (position == 3){
             return mContext.getString(R.string.category_culture);
         } else {
-            return mContext.getString(R.string.category_liftstyle);
+            return mContext.getString(R.string.category_business);
         }
     }
 }

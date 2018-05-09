@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -44,6 +45,19 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
             }
         });
 
+        newsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
+        newsListView.setAdapter(mAdapter);
         getLoaderManager().initLoader(loaderId, null, this);
         return rootView;
     }

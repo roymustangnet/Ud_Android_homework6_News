@@ -23,7 +23,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsItem> {
 
         View listItemView = view;
         if (listItemView == null){
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.new_list_item, viewGroup, false);
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.news_list_item, viewGroup, false);
         }
 
         TextView titleTextView = (TextView)listItemView.findViewById(R.id.title_textview);

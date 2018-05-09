@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">News</string>
-    <string name="category_news">News</string>
-    <string name="category_option">Option</string>
-    <string name="category_sport">Sport</string>
-    <string name="category_culture">Culture</string>
-    <string name="category_liftstyle">LifeStyle</string>
+    <string name="category_news">news</string>
+    <string name="category_politics">politics</string>
+    <string name="category_sport">sport</string>
+    <string name="category_culture">culture</string>
+    <string name="category_business">business</string>
 </resources>
