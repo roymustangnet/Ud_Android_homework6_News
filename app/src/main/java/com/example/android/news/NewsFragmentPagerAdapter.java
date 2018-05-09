@@ -16,7 +16,6 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     @Override
     public Fragment getItem(int position) {
-//        String url = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=166f9f73-2fb8-4a05-8ccb-b9c1491c473b";
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         String section = "";
@@ -48,7 +47,7 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendQueryParameter("section", section);
         uriBuilder.appendQueryParameter("format", "json");
-        uriBuilder.appendQueryParameter("api-key", "166f9f73-2fb8-4a05-8ccb-b9c1491c473b");
+        uriBuilder.appendQueryParameter("api-key", "test");
 
         return uriBuilder.toString();
     }
