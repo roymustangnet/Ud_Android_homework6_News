@@ -1,5 +1,8 @@
 package com.example.android.news;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.LoaderManager;
 import android.content.Intent;
 import android.support.v4.content.Loader;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,8 @@ import java.util.List;
 public class NewsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
     private String mUrl;
     NewsListAdapter mAdapter;
+    TextView mEmptyStateTextView;
+    View rootView;
 
     public NewsFragment() {
     }
@@ -31,7 +37,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
         this.mUrl = bundle.getString("url");
         int loaderId = bundle.getInt("loaderId");
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_news_list, container, false);
+        rootView = inflater.inflate(R.layout.fragment_news_list, container, false);
         ListView newsListView = rootView.findViewById(R.id.news_listview);
         mAdapter = new NewsListAdapter(getContext(), new ArrayList<NewsItem>());
 
@@ -45,20 +51,26 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
             }
         });
 
-        newsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-            }
-        });
 
         newsListView.setAdapter(mAdapter);
-        getLoaderManager().initLoader(loaderId, null, this);
+
+        mEmptyStateTextView = (TextView) rootView.findViewById(R.id.empty_view);
+        newsListView.setEmptyView(mEmptyStateTextView);
+
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            getLoaderManager().initLoader(loaderId, null, this);
+        } else {
+            View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
+            loadingIndicator.setVisibility(View.GONE);
+            mEmptyStateTextView.setText(R.string.no_internet_connection);
+        }
+
+
+
         return rootView;
     }
 
@@ -70,6 +82,9 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> data) {
+        View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
+        mEmptyStateTextView.setText(R.string.no_data);
         mAdapter.clear();
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
