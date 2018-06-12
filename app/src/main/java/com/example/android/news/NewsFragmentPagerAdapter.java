@@ -3,15 +3,33 @@ package com.example.android.news;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
+public class NewsFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private final String BASE_URL = "https://content.guardianapis.com/search";
+    private Integer mPageCount = 10;
     public NewsFragmentPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
+    }
+
+    public void setPageCount(int pageCount){
+        this.mPageCount = pageCount;
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
+
+    public NewsFragmentPagerAdapter(Context context, FragmentManager fm, int pageCount) {
+        super(fm);
+        mContext = context;
+        this.mPageCount = pageCount;
     }
     private Context mContext;
     @Override
@@ -48,6 +66,8 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
         uriBuilder.appendQueryParameter("section", section);
         uriBuilder.appendQueryParameter("format", "json");
         uriBuilder.appendQueryParameter("api-key", "test");
+        uriBuilder.appendQueryParameter("page-size", this.mPageCount.toString());
+
 
         return uriBuilder.toString();
     }
@@ -71,4 +91,6 @@ public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
             return mContext.getString(R.string.category_business);
         }
     }
+
+
 }
